@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>node websocket</title>
+	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+</head>
+<body>
+	<input type="text" id="textValue">
+	<button id="submit">提交</button>
+	<h1 id="showBox"></h1>
+
+	<script>
+		window.onload = function() {
+			// 建立连接
+			socket = io.connect('ws://localhost:3000');
+			var $showBox = document.getElementById('showBox');
+			// 获取提交按钮
+			var $submit = document.getElementById('submit');
+			// 点击提交按钮
+			$submit.onclick = function() {
+				// 获取文本框的值
+				var textValue = document.getElementById('textValue').value;
+				socket.emit('msg', {'value': textValue});
+			}
+
+			// 检测返回数据
+			socket.on('response', function(obj) {
+				$showBox.innerHTML += obj.value + '<br>';
+			})
+
+			
+		}
+	</script>
+</body>
+</html>
